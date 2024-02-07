@@ -1,0 +1,150 @@
+<form
+  class="form-horizontal custome-form"
+  name="form"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  [formGroup]="form"
+>
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Konfirmasi Penghentian Aktiva Tetap </strong>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="bsModalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <h4 class="text-danger text-center">
+        Anda ingin menghentikan aktiva tetap ini?
+      </h4>
+      <div class="form-group row">
+        <label for="disposedDate" class="col-md-3 col-form-label"
+          >Tgl. Penghentian</label
+        >
+        <div class="col-md-4">
+          <input
+            formControlName="disposedDate"
+            class="form-control"
+            id="disposedDate"
+            bsDatepicker
+            [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD/MM/YYYY'
+            }"
+          />
+          <div *ngIf="f.disposedDate.errors" class="text-danger">
+            <div *ngIf="f.disposedDate.errors.required">Tgl. harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="gainLossAccountId" class="col-md-3 col-form-label"
+          >Akun Tambah/ Hilang</label
+        >
+        <div class="col-md-9">
+          <ng-select
+            id="gainLossAccountId"
+            name="gainLossAccountId"
+            [items]="listAkunGainLoss"
+            bindLabel="fullName"
+            bindValue="id"
+            formControlName="gainLossAccountId"
+          >
+          </ng-select>
+          <div *ngIf="f.gainLossAccountId.errors" class="text-danger">
+            <div *ngIf="f.gainLossAccountId.errors.required">Akun harus dipilih</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="quantity" class="col-md-3 col-form-label">Quantity</label>
+        <div class="col-md-3">
+          <input
+            type="number"
+            class="form-control"
+            id="quantity"
+            formControlName="quantity"
+            aria-describedby="quantity"
+            autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.quantity.errors }"
+          />
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="f.quantity.errors" class="text-danger">
+            <div *ngIf="f.quantity.errors.required">Qty harus diisi</div>
+          </div>
+          <div *ngIf="f.quantity.value > quantityBalance" class="text-danger">
+            Qty tidak boleh lebih dari sisa ({{quantityBalance}})
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-check-inline">
+            <label class="form-check-label" for="isSale">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="isSale"
+                name="isSale"
+                [(ngModel)]="isSale"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="enableSelling($event)"
+              />Penjualan Aktiva
+            </label>
+          </div>
+          <div class="form-group row">
+            <label for="disposedDate" class="col-md-3 col-form-label"
+              >Harga Aktiva</label
+            >
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control text-right"
+                #detAmount
+                formControlName="sellingPrice"
+                currencyInput
+                [defaultValue]="0"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="sellingAccountId" class="col-md-3 col-form-label"
+              >Akun</label
+            >
+            <div class="col-md-9">
+              <ng-select
+                id="sellingAccountId"
+                name="sellingAccountId"
+                [items]="listAkunAll"
+                bindLabel="fullName"
+                bindValue="id"
+                formControlName="sellingAccountId"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-sm btn-danger mr-2"
+          (click)="cancel()"
+        >
+          <i class="fa fa-ban"></i> Tidak
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa fa-check-square-o"></i> IYA
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

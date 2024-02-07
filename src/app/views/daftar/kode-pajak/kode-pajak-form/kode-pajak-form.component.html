@@ -1,0 +1,86 @@
+<form class="form-horizontal custome-form" name="editForm" role="form" novalidate (ngSubmit)="save()"
+  [formGroup]="editForm">
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Daftar Kode Pajak </strong>
+      <small> {{ title }} </small>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <label for="kode" class="col-md-3 col-form-label">Kode</label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" id="kode" formControlName="kode" autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.kode.errors }" />
+          <div *ngIf="isSaving && f.kode.errors" class="invalid-feedback">
+            <div *ngIf="f.kode.errors.required">Kode harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="nama" class="col-md-3 col-form-label">Nama</label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="nama" formControlName="nama" autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.nama.errors }" />
+          <div *ngIf="isSaving && f.nama.errors" class="invalid-feedback">
+            <div *ngIf="f.nama.errors.required">Nama harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="nilai" class="col-md-3 col-form-label">Nilai</label>
+        <div class="col-md-5">
+          <div class="input-group">
+            <input type="number" class="form-control" id="nilai" formControlName="nilai" aria-describedby="nilai" autocomplete="false"
+              [ngClass]="{ 'is-invalid': isSaving && f.nilai.errors }" />
+            <div class="input-group-append">
+              <span class="input-group-text" id="nilai">%</span>
+            </div>
+            <div *ngIf="isSaving && f.nilai.errors" class="invalid-feedback">
+              <div *ngIf="f.nilai.errors.required">Nilai harus diisi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-md-3">Keterangan</label>
+        <div class="col-md-9">
+          <textarea class="form-control" formControlName="keterangan" rows="1">
+          </textarea>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group row">
+        <label for="akunPenjualan" class="col-md-3 col-form-label">Akun Pajak Penjualan</label>
+        <div class="col-md-9">
+          <app-input-pencarian-akun [isSaving]="isSaving" [readonly]="readonly" [jenis]="'akunPenjualan'"
+            [data]="data?.akunPenjualan" (change)="onChangeAkun($event)"></app-input-pencarian-akun>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="akunPembelian" class="col-md-3 col-form-label">Akun Pajak Pembelian</label>
+        <div class="col-md-9">
+          <app-input-pencarian-akun [isSaving]="isSaving" [readonly]="readonly" [jenis]="'akunPembelian'"
+            [data]="data?.akunPembelian" (change)="onChangeAkun($event)"></app-input-pencarian-akun>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-sm btn-danger mr-2" (click)="cancel()">
+          <i class="fa fa-ban"></i> Batal
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa fa-dot-circle-o"></i> Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

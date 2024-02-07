@@ -1,0 +1,170 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Laporan Pembelian
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Pilih jenis laporan</h4>
+              <ul class="list-group">
+                <li
+                  *ngFor="let l of jenisLaporan"
+                  class="list-group-item py-2"
+                  [class.active]="l === laporanTerpilih"
+                  style="cursor: pointer"
+                  (click)="selectReport(l)"
+                >
+                  {{ l.id }}. {{ l.nama }}
+                </li>
+              </ul>
+            </div>
+            <div class="col">
+              <h4>Parameter</h4>
+              <form
+                class="form-horizontal"
+                name="editForm"
+                role="form"
+                novalidate
+                [formGroup]="editForm"
+              >
+                <div class="card">
+                  <div class="card-body">
+                    <div
+                      class="form-group row"
+                    >
+                      <label class="col-md-2 col-form-label">
+                        Perusahaan
+                      </label>
+                      <div class="col">
+                        <ng-select
+                          [items]="listPerusahaan"
+                          bindLabel="nama"
+                          bindValue="id"
+                          formControlName="perusahaan"
+                        ></ng-select>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                      [hidden]="laporanTerpilih && laporanTerpilih.id !== null && ![reportAP.PEMBELIAN_PER_PEMASOK, reportAP.PEMBELIAN_PER_PEMASOK_DETAIL, reportAP.PEMBELIAN_PER_BARANG_TOTAL, reportAP.PEMBELIAN_PER_BARANG_QTY, reportAP.PEMBELIAN_PER_BARANG, reportAP.PEMBELIAN_PER_BARANG_DET, reportAP.PEMBELIAN_PER_BIAYA].includes(laporanTerpilih.id)"
+                    >
+                      <label class="col-md-2 col-form-label">
+                        Vendor
+                      </label>
+                      <div class="col">
+                        <ng-select
+                          [items]="listVendor"
+                          bindLabel="nama"
+                          bindValue="id"
+                          formControlName="vendor"
+                        ></ng-select>
+                      </div>
+                    </div>
+                    <div class="form-group row" >
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Dari</label
+                      >
+                      <div class="col-md-3" >
+                        <input
+                          class="form-control"
+                          id="tg1"
+                          formControlName="tg1"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Sampai
+                      </label>
+                      <div class="col-md-3">
+                        <input
+                          class="form-control"
+                          id="tg2"
+                          formControlName="tg2"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row" [hidden]="laporanTerpilih && laporanTerpilih.id !== null && ![reportAP.PEMBELIAN_PER_PEMASOK, reportAP.PEMBELIAN_PER_BARANG_TOTAL, reportAP.PEMBELIAN_PER_BARANG_QTY].includes(laporanTerpilih.id)">
+                      <label class="col-md-3 col-form-label"
+                        >Bagi Nilai dalam</label
+                      >
+                      <div class="col-md-3">
+                        <select name="interval" id="interval" class="form-control" formControlName="interval">
+                          <option value="">Hanya Total</option>
+                          <option value="harian">Harian</option>
+                          <option value="mingguan">Mingguan</option>
+                          <option value="bulanan">Bulanan</option>
+                          <option value="kwartal">Kwartal</option>
+                          <option value="tahunan">Tahunan</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row pull-right">
+                      <div class="col-md-12">
+                        <button
+                          class="btn btn-secondary"
+                          type="button"
+                          (click)="onCancel()"
+                        >
+                          Batal
+                        </button>
+                        &nbsp;
+                        <div class="btn-group" dropdown>
+                          <button
+                            id="button-animated"
+                            dropdownToggle
+                            type="button"
+                            class="btn btn-primary dropdown-toggle"
+                            aria-controls="dropdown-animated"
+                            [disabled]="!editForm.valid"
+                          >
+                            Cetak <span class="caret"></span>
+                          </button>
+                          <ul
+                            id="dropdown-animated"
+                            *dropdownMenu
+                            class="dropdown-menu"
+                            role="menu"
+                            aria-labelledby="button-animated"
+                          >
+                            <li role="menuitem">
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="cetak('pdf')"
+                                >PDF</a
+                              >
+                            </li>
+                            <li role="menuitem">
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="cetak('xlsx')"
+                                >XLSX</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Tipe Aktiva Tetap
+        </div>
+        <div class="card-body">
+          <h2>
+            <span
+              id="user-management-page-heading"
+              jhiTranslate="userManagement.home.title"
+              >Daftar Tipe Aktiva Tetap</span
+            >
+            <button class="btn btn-success pull-right" (click)="add()">
+              <i class="fa fa-plus fa-fw"></i> <span>Tambah</span>
+            </button>
+          </h2>
+          <div id="no-more-tables" class="table-responsive">
+            <table
+              aria-describedby="tableDesc"
+              style="width: 100%;"
+              class="table table-sm table-stripped table-bordered"
+            >
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Tipe Pajak</th>
+                  <th class="text-center">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let data of listData"
+                  class="vcard"
+                >
+                  <td data-title="Kode">
+                    <a
+                      style="
+                        color: #20a8d8;
+                        text-decoration: none;
+                        background-color: transparent;
+                        cursor: pointer;
+                      "
+                      (click)="edit(data)"
+                      >{{ data.description }}</a
+                    >
+                  </td>
+                  <td data-title="Metode Penyusutan">
+                    {{ data.fiscalType.description }}
+                  </td>
+                  <td data-title="Actions" class="text-center">
+                    <div class="btn-group flex-btn-group-container">
+                      <button
+                        type="submit"
+                        (click)="view(data)"
+                        class="btn btn-info btn-sm"
+                      >
+                        <i class="fa fa-eye fa-fw"></i>
+                      </button>
+                      <button
+                        type="submit"
+                        (click)="edit(data)"
+                        queryParamsHandling="merge"
+                        class="btn btn-primary btn-sm"
+                      >
+                        <i class="fa fa-pencil fa-fw"></i>
+                      </button>
+                      <button
+                        type="button"
+                        (click)="delete(data)"
+                        class="btn btn-danger btn-sm"
+                      >
+                        <i class="fa fa-trash-o fa-fw"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

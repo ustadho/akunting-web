@@ -1,0 +1,48 @@
+<div class="card mb-0">
+  <div class="card-header">
+    <strong> Data Akun </strong>
+    <small> {{ title }} </small>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div id="no-more-tables" class="table-responsive">
+      <table aria-describedby="tableDesc" style="width: 100%;" class="table table-sm table-stripped table-bordered">
+        <thead>
+          <tr>
+            <td class="p-0">
+              <input type="text" class="form-control" placeholder="Cari No. Akun ..." [(ngModel)]="filterKode$"
+                (ngModelChange)="filterCoa()">
+            </td>
+            <td class="p-0">
+              <input type="text" class="form-control" placeholder="Cari Nama Akun ..." [(ngModel)]="filterNama$" #searchNama
+                (ngModelChange)="filterCoa()">
+            </td>
+          </tr>
+        </thead>
+        <thead>
+          <tr>
+            <th width="40%">No. Akun</th>
+            <th>Nama Akun</th>
+            <!-- <th>Type Akun</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of dataCoaFiltered" class="table-akun" (click)="onSelectedAkun(x)">
+            <td>{{x.kode}}</td>
+            <td>{{x.nama}}</td>
+            <!-- <td>{{x.tipe_akun}}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-sm btn-danger" (click)="bsModalRef.hide()">
+        <i class="fa fa-ban"></i> Batal
+      </button>
+    </div>
+  </div>
+</div>

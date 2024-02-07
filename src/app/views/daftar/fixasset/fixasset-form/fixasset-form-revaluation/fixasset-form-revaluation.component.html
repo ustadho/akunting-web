@@ -1,0 +1,250 @@
+<form
+  class="form-horizontal custome-form"
+  name="form"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  [formGroup]="form"
+>
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Revaluasi Aktiva Tetap </strong>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="bsModalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <label for="revaluationDate" class="col-md-3 col-form-label"
+          >Tgl. Revaluasi</label
+        >
+        <div class="col-md-2">
+          <input
+            formControlName="revaluationDate"
+            class="form-control"
+            id="revaluationDate"
+            bsDatepicker
+            [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD/MM/YYYY'
+            }"
+          />
+          <div *ngIf="f.revaluationDate.errors" class="text-danger">
+            <div *ngIf="f.revaluationDate.errors.required">
+              Tgl. Revaluasi harus diisi
+            </div>
+          </div>
+        </div>
+        <label for="lastDepreciationDate" class="col-md-2 col-form-label"
+          >Penyusut Akhir</label
+        >
+        <div class="col-md-2">
+          <input
+            formControlName="lastDepreciationDate"
+            class="form-control"
+            id="lastDepreciationDate"
+            bsDatepicker
+            [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD/MM/YYYY'
+            }"
+          />
+          <div *ngIf="f.lastDepreciationDate.errors" class="text-danger">
+            <div *ngIf="f.lastDepreciationDate.errors.required">
+              Tgl. harus diisi
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="lastBookValue" class="col-md-3 col-form-label"
+          >Nilai Buku Akhir</label
+        >
+        <div class="col-md-4">
+          <input
+            name="lastBookValue"
+            id="lastBookValue"
+            type="text"
+            class="form-control text-right"
+            #lastBookAmount
+            formControlName="lastBookValue"
+            currencyInput
+            [defaultValue]="0"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="amount" class="col-md-3 col-form-label"
+          >Nilai Revaluasi</label
+        >
+        <div class="col-md-4">
+          <input
+            name="amount"
+            id="amount"
+            type="text"
+            class="form-control text-right"
+            #lastBookAmount
+            formControlName="amount"
+            currencyInput
+            [defaultValue]="0"
+          />
+          <div *ngIf="f.amount.errors" class="text-danger">
+            <div *ngIf="f.amount.errors.required">Nilai harus diisi</div>
+            <div *ngIf="f.amount.errors.min">Nilai harus > 0</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="gainLossAccountId" class="col-md-3 col-form-label"
+          >Akun Laba/Rugi</label
+        >
+        <div class="col-md-9">
+          <ng-select
+            id="gainLossAccountId"
+            name="gainLossAccountId"
+            [items]="listAkunGainLoss"
+            bindLabel="fullName"
+            bindValue="id"
+            formControlName="gainLossAccountId"
+          >
+          </ng-select>
+          <div *ngIf="f.gainLossAccountId.errors" class="text-danger">
+            <div *ngIf="f.gainLossAccountId.errors.required">Akun harus dipilih</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="newAgeYear" class="col-md-3 col-form-label"
+          >Umur bulan aktiva</label
+        >
+        <div class="col-md-3">
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              id="newAgeYear"
+              formControlName="newAgeYear"
+              aria-describedby="newAgeYear"
+              autocomplete="false"
+              (change)="calculateRate()"
+              [ngClass]="{
+                'is-invalid': isSaving && f.newAgeYear.errors
+              }"
+            />
+            <div class="input-group-append">
+              <span class="col-form-label ml-2">tahun</span>
+            </div>
+            <div *ngIf="isSaving && f.newAgeYear.errors" class="invalid-feedback">
+              <div *ngIf="f.newAgeYear.errors.required">
+                Umur tahun harus diisi
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              id="newAgeMonth"
+              formControlName="newAgeMonth"
+              aria-describedby="newAgeMonth"
+              autocomplete="false"
+              (change)="calculateRate()"
+              [ngClass]="{
+                'is-invalid': isSaving && f.newAgeMonth.errors
+              }"
+            />
+            <div class="input-group-append">
+              <span class="col-form-label ml-2">bulan</span>
+            </div>
+            <div *ngIf="isSaving && f.newAgeMonth.errors" class="invalid-feedback">
+              <div *ngIf="f.newAgeMonth.errors.required">
+                Umur bulan aktiva harus diisi
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="deprMethodId" class="col-md-3 col-form-label"
+          >Metode Penyusutan</label
+        >
+        <div class="col-md-4">
+          <ng-select
+            id="deprMethodId"
+            name="deprMethodId"
+            [items]="listDepreciationMethod"
+            bindLabel="description"
+            bindValue="id"
+            formControlName="deprMethodId"
+            (change)="selectDepreciationMethod($event)"
+          >
+          </ng-select>
+          <div *ngIf="f.deprMethodId.errors" class="text-danger">
+            <div *ngIf="f.deprMethodId.errors.required">Metode depresiasi dipilih</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <div class="input-group mb-7">
+              <div class="input-group-prepend">
+                <span class="col-form-label mr-2">Rasio</span>
+              </div>
+              <input
+                type="number"
+                class="form-control"
+                id="ratio"
+                formControlName="ratio"
+                aria-describedby="ratio"
+                autocomplete="false"
+                [ngClass]="{
+                  'is-invalid': isSaving && f.ratio.errors
+                }"
+              />
+              <div class="input-group-append">
+                <span class="col-form-label ml-2 mr-2"> % </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="residu" class="col-md-3 col-form-label"
+          >Nilai stlh Revaluasi</label
+        >
+        <div class="col-md-4">
+          <input
+            name="residu"
+            id="residu"
+            type="text"
+            class="form-control text-right"
+            #residu
+            formControlName="residu"
+            currencyInput
+            [defaultValue]="0"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-sm btn-danger mr-2"
+          (click)="cancel()"
+        >
+          <i class="fa fa-ban"></i> Batal
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa fa-check-square-o"></i> OK
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

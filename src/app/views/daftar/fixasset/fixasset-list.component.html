@@ -1,0 +1,427 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> {{ pageTitle }}
+        </div>
+        <div class="card-body">
+          <form [formGroup]="filterForm">
+            <div class="row g-0" style="margin: 0em, 1em">
+              <div class="col-lg-2 pr-0">
+                <div class="card">
+                  <div class="card-header">
+                    <i class="fa fa-align-justify"></i><b>Filter</b>
+                    <span style="cursor: pointer" class="badge badge-success pull-right" (click)="add()"> AKTIVA BARU </span>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group">
+                        <label class="font-weight-bold" for="email"
+                          >Cari:</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="< No. >"
+                          id="no"
+                          formControlName="code"
+                        />
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="< Keterangan >"
+                          id="keterangan"
+                          formControlName="desc"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pl-0 pr-0 form-floating">
+                        <label class="mb-0" for="vendor"
+                          >Tipe Aktiva</label
+                        >
+                        <ng-select
+                          id="faTypeId"
+                          name="faTypeId"
+                          [items]="listFixassetType"
+                          bindLabel="description"
+                          bindValue="id"
+                          formControlName="faTypeId"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pl-0 pr-0 form-floating">
+                        <label class="mb-0 mt-2" for="depreciationMethodId"
+                          >Metode Depresiasi</label
+                        >
+                        <ng-select
+                          id="depreciationMethodId"
+                          name="depreciationMethodId"
+                          [items]="listDepreciationMethod"
+                          bindLabel="description"
+                          bindValue="id"
+                          formControlName="depreciationMethodId"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pl-1 pr-1 card form-floating">
+                        <label class="mb-0 mt-2"
+                          >Tidak berwujud</label
+                        >
+                        <div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="intangible" value="N" formControlName="intangible">Tidak
+                            </label>
+                          </div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="intangible" value="Y" formControlName="intangible">Ya
+                            </label>
+                          </div>
+                          <div class="form-check-inline disabled">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="intangible" value="A" formControlName="intangible">Semua
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pl-1 pr-1 card form-floating">
+                        <label class="mb-0 mt-2"
+                          >Pajak</label
+                        >
+                        <div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="fiscal"  value="N" formControlName="fiscal">Tidak
+                            </label>
+                          </div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="fiscal"  value="Y" formControlName="fiscal">Ya
+                            </label>
+                          </div>
+                          <div class="form-check-inline disabled">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="fiscal"  value="A" formControlName="fiscal">Semua
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-0">
+                      <div class="col-md-12 pl-1 pr-1">
+                        <label class="mb-0 mt-2 font-weight-bold"
+                          >Status</label>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="processed" formControlName="processed" (change)="transition()">
+                                <label class="form-check-label" for="processed">
+                                  Terproses
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="stopped"  formControlName="stopped" (change)="transition()">
+                                <label class="form-check-label" for="stopped">
+                                  Dihentikan
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-lg-12 custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="usageDateFilter"
+                          formControlName="usageDateFilter"
+                          (change)="transition()"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="chkFilterTanggal"
+                          >Tgl. Pakai</label
+                        >
+                      </div>
+                      <div
+                        class="form-group"
+                        [hidden]="!filterForm.get('usageDateFilter').value"
+                      >
+                        <input
+                          formControlName="usageDate1"
+                          class="form-control"
+                          id="usageDate1"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                        <input
+                          formControlName="usageDate2"
+                          class="form-control"
+                          id="usageDate2"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="purchaseDateFilter"
+                          formControlName="purchaseDateFilter"
+                          (change)="transition()"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="purchaseDateFilter"
+                          >Tgl. Perolehan</label
+                        >
+                      </div>
+                      <div
+                        class="form-group"
+                        [hidden]="!filterForm.get('purchaseDateFilter').value"
+                      >
+                        <input
+                          formControlName="purchaseDate1"
+                          class="form-control"
+                          id="purchaseDate1"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                        <input
+                          formControlName="purchaseDate2"
+                          class="form-control"
+                          id="purchaseDate2"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn-primary btn-block"
+                      (click)="transition()"
+                    >
+                      Perbaharui
+                    </button>
+                    <button
+                      class="btn btn-default btn-block"
+                      (click)="previewList()"
+                    >
+                      Print
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-10 pl-1">
+                <div id="no-more-tables" class="table-responsive">
+                  <table
+                    aria-describedby="tableDesc"
+                    style="width: 100%"
+                    class="table table-sm table-stripped table-bordered"
+                  >
+                    <thead>
+                      <tr
+                        jhiSort
+                        [(predicate)]="predicate"
+                        [(ascending)]="reverse"
+                        [callback]="transition.bind(this)"
+                      >
+                        <th jhiSortBy="code">
+                          <span> Kode Aktiva </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+
+                        <th jhiSortBy="desc">
+                          <span> Keterangan </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="type.description">
+                          <span> Tipe Aktiva </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="faAccount.nama">
+                          <span> Akun Aktiva </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="cost">
+                          <span> Biaya Aktiva </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="usageDate">
+                          <span> Tgl. Pakai </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="purchaseDate">
+                          <span> Tgl. Beli </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="quantity">
+                          <span> Quantity </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="estimationLive">
+                          <span> Umur Bulan Aktiva </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="">
+                          <span> %Penyusut/Th </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="depreciationMethod.name">
+                          <span> Metode Penyusutan </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="department.name">
+                          <span> Departemen </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="intangible">
+                          <span> Tidak Berwujud </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="isFiscal">
+                          <span> Tidak Berwujud </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th class="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let data of listData;
+                          let idx = index;
+                          trackBy: trackIdentity
+                        "
+                      >
+                        <td data-title="Kode Aktiva">
+                          {{ data.code }}
+                        </td>
+                        <td data-title="Keterangan">
+                          {{ data.description }}
+                        </td>
+                        <td data-title="Tipe Aktiva">
+                          {{ data.type }}
+                        </td>
+                        <td data-title="Akun Aktiva">
+                          {{ data.activaAccount }}
+                        </td>
+                        <td data-title="Biaya Aktiva" class="text-right">
+                          {{ data.cost | number }}
+                        </td>
+                        <td data-title="Tgl. Pakai">
+                          {{ data.usageDate | date : "dd/MM/yyyy" }}
+                        </td>
+                        <td data-title="Tgl. Beli">
+                          {{ data.purchaseDate | date : "dd/MM/yyyy" }}
+                        </td>
+                        <td data-title="Umur Bulan Aktiva" class="text-right">
+                          {{ data.quantity | number }}
+                        </td>
+                        <td data-title="Umur Bulan Aktiva" class="text-right">
+                          {{ data.estimatedMonthLive | number }}
+                        </td>
+                        <td data-title="% Penyusut/Th" class="text-right">
+                          {{ data.depreciationRate | number }}
+                        </td>
+                        <td data-title="Metode Penyusutan">
+                          {{ data.depreciationMethod }}
+                        </td>
+                        <td data-title="Departemen">
+                          {{ data.department}}
+                        </td>
+                        <td data-title="Tidak Berwujud">
+                          {{ data.intangible | yesNo}}
+                        </td>
+                        <td data-title="Pajak">
+                          {{ data.isFiscal | yesNo }}
+                        </td>
+                        <td data-title="Actions" class="text-center">
+                          <div class="btn-group flex-btn-group-container">
+                            <a
+                              *ngIf="data.glHistId !== null"
+                              class="btn btn-secondary btn-sm"
+                              type="button"
+                              queryParamsHandling="merge"
+                              (click)="previewGlHistory(data.glHistId)"
+                            >
+                              GL
+                            </a>
+                            <a
+                              class="btn btn-primary btn-sm"
+                              type="submit"
+                              queryParamsHandling="merge"
+                              (click)="edit(data)"
+                            >
+                              <i class="fa fa-pencil fa-fw"></i>
+                            </a>
+                            <a
+                              class="btn btn-success btn-sm"
+                              type="submit"
+                              queryParamsHandling="merge"
+                              (click)="onPrint(data)"
+                            >
+                              <i class="fa fa-print fa-fw"></i>
+                            </a>
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                              (click)="delete(data)"
+                            >
+                              <i class="fa fa-trash-o fa-fw"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div
+                  class="d-flex justify-content-center"
+                  *ngIf="totalItems > itemsPerPage"
+                >
+                  <pagination
+                    [totalItems]="totalItems"
+                    [(ngModel)]="page"
+                    [boundaryLinks]="true"
+                    (pageChanged)="loadPage($event)"
+                    [itemsPerPage]="itemsPerPage"
+                    previousText="&lsaquo;"
+                    nextText="&rsaquo;"
+                    firstText="&laquo;"
+                    lastText="&raquo;"
+                    [maxSize]="10"
+                  >
+                  </pagination>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

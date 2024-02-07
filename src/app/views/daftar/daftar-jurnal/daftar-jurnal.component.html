@@ -1,0 +1,241 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> {{pageTitle}}
+        </div>
+        <div class="card-body">
+          <form [formGroup]="filterForm">
+            <div class="row g-0" style="margin: 0em, 1em">
+              <div class="col-lg-2 pr-0">
+                <div class="card">
+                  <div class="card-header">
+                    <i class="fa fa-align-justify"></i><b>Filter</b>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group">
+                        <label class="font-weight-bold" for="email"
+                          >Perusahaan:</label
+                        >
+                        <ng-select
+                          [items]="listPerusahaan"
+                          bindLabel="nama"
+                          bindValue="id"
+                          formControlName="idPerusahaan"
+                          placeholder="Pilih Perusahaan"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <label class="font-weight-bold" for="email"
+                          >Cari:</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="< No. >"
+                          id="no"
+                          formControlName="nomor"
+                        />
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="< Keterangan >"
+                          id="keterangan"
+                          formControlName="desc"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="chkFilterTanggal"
+                          formControlName="chkFilterTanggal"
+                        />
+                        <label
+                          class="custom-control-label font-weight-bold"
+                          for="chkFilterTanggal"
+                          >Filter Tanggal</label
+                        >
+                      </div>
+                      <div
+                        class="form-group"
+                        [hidden]="!filterForm.get('chkFilterTanggal').value"
+                      >
+                        <input
+                          formControlName="tglAwal"
+                          class="form-control"
+                          id="tglAwal"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                        <input
+                          formControlName="tglAkhir"
+                          class="form-control"
+                          id="tglAkhir"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <div class="row" [hidden]="['DPT', 'PMT'].includes(source)">
+                      <div class="col-lg-12">
+                        <label class="font-weight-bold">Tipe</label>
+                      </div>
+                      <div class="col-lg-12 form-group">
+                        <ng-container formArrayName="types" >
+                          <div
+                            class="checkbox" *ngFor="let t of filterForm.get('types').controls; let i = index" [formGroupName]="i"
+                          >
+                            <label><input type="checkbox" formControlName="selected" />{{t.get('name')!.value}}</label>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn-primary btn-block"
+                      (click)="transition()"
+                    >
+                      Perbaharui
+                    </button>
+                    <button
+                      class="btn btn-success btn-block"
+                      (click)="baru()"
+                    >
+                      Baru
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      (click)="printList()"
+                    >
+                      Print
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-10 pl-1">
+                <div id="no-more-tables" class="table-responsive">
+                  <table
+                    aria-describedby="tableDesc"
+                    style="width: 100%"
+                    class="table table-sm table-stripped table-bordered"
+                  >
+                    <thead>
+                      <tr
+                        jhiSort
+                        [(predicate)]="predicate"
+                        [(ascending)]="reverse"
+                        [callback]="transition.bind(this)"
+                      >
+                        <th jhiSortBy="nomor">No.</th>
+                        <th jhiSortBy="tanggal">
+                          <span> Tanggal </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+
+                        <th jhiSortBy="tipe">
+                          <span> Tipe </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="jumlah">
+                          <span> Jumlah </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th jhiSortBy="keterangan">
+                          <span> Keterangan </span>
+                          <span class="fa fa-sort"></span>
+                        </th>
+                        <th class="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let data of listData;
+                          let idx = index;
+                          trackBy: trackIdentity
+                        "
+                      >
+                        <td data-title="Nomor">
+                          {{ data.nomor }}
+                        </td>
+                        <td data-title="Tanggal">
+                          {{ data.tanggal | date : "dd/MM/yyyy" }}
+                        </td>
+                        <td data-title="Tipe">
+                          {{ data.tipe }}
+                        </td>
+                        <td data-title="Tipe" class="text-right">
+                          {{ data.jumlah | number }}
+                        </td>
+                        <td data-title="Tipe">
+                          {{ data.keterangan }}
+                        </td>
+                        <td data-title="Actions" class="text-center">
+                          <div class="btn-group flex-btn-group-container">
+                            <button
+                              type="button"
+                              class="btn btn-success btn-sm"
+                              (click)="print(data)"
+                            >
+                              <i class="fa fa-print fa-fw"></i>
+                            </button>
+                            <a
+                              class="btn btn-primary btn-sm"
+                              type="submit"
+                              queryParamsHandling="merge"
+                              (click)="edit(data)"
+                            >
+                              <i class="fa fa-pencil fa-fw"></i>
+                            </a>
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                              (click)="delete(data)"
+                            >
+                              <i class="fa fa-trash-o fa-fw"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div
+                  class="d-flex justify-content-center"
+                  *ngIf="totalItems > itemsPerPage"
+                >
+                  <pagination
+                    [totalItems]="totalItems"
+                    [(ngModel)]="page"
+                    [boundaryLinks]="true"
+                    (pageChanged)="loadPage($event)"
+                    [itemsPerPage]="itemsPerPage"
+                    previousText="&lsaquo;"
+                    nextText="&rsaquo;"
+                    firstText="&laquo;"
+                    lastText="&raquo;"
+                    [maxSize]="10"
+                  >
+                  </pagination>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

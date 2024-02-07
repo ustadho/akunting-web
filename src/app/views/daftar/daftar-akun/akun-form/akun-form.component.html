@@ -1,0 +1,115 @@
+<form class="form-horizontal custome-form" name="editForm" role="form" novalidate (ngSubmit)="save()"
+  [formGroup]="editForm">
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Form Akun </strong>
+      <small> {{ title }} </small>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="vat">Tipe Akun</label>
+        <div class="col-md-9">
+          <ng-select [items]="listTipe" bindLabel="nama" bindValue="id" formControlName="tipeId"
+            placeholder="Pilih Tipe Akun">
+          </ng-select>
+          <div *ngIf="isSaving && f.tipeId.errors" class="text-danger small">
+            <div *ngIf="f.tipeId.errors.required">Tipe Akun harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="nama" class="col-md-3 col-form-label">No. Akun</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" id="kode" formControlName="kode" autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.kode.errors }" />
+          <div *ngIf="isSaving && f.kode.errors" class="invalid-feedback">
+            <div *ngIf="f.kode.errors.required">No. Akun harus diisi</div>
+          </div>
+        </div>
+        <label class="col-md-3 col-form-label">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="aktif" formControlName="aktif" />
+            <label class="form-check-label" for="aktif">
+              Aktif
+            </label>
+          </div>
+        </label>
+      </div>
+      <div class="form-group row">
+        <label for="nama" class="col-md-3 col-form-label">Nama</label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="nama" formControlName="nama" autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.nama.errors }" />
+          <div *ngIf="isSaving && f.nama.errors" class="invalid-feedback">
+            <div *ngIf="f.nama.errors.required">Nama harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="vat">Mata Uang</label>
+        <div class="col-md-9">
+          <ng-select [items]="listMataUang" bindLabel="nama" bindValue="id" formControlName="mataUangId"
+            placeholder="Pilih Mata Uang">
+          </ng-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="isHasParent" [(ngModel)]="isHasParent"
+              [ngModelOptions]="{standalone: true}" (click)="f.parentId.setValue(null)"
+              disabled="{{readonly}}" />
+            <label class="form-check-label" for="isHasParent">
+              Bagian dari Akun
+            </label>
+          </div>
+        </label>
+        <div class="col-md-9" *ngIf="isHasParent">
+          <ng-select [items]="listParent" bindLabel="nama" bindValue="id" formControlName="parentId"
+            placeholder="Pilih Akun Induk" (ngModelChange)="idParentError = false">
+          </ng-select>
+          <div *ngIf="isSaving && idParentError" class="text-danger small">
+            <div *ngIf="idParentError">Akun Induk harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="editForm.get('tipeId').value == 1">
+        <label for="name" class="col-md-3">Kode K/B Masuk</label>
+        <div class="col-md-3">
+          <input type="text" class="form-control" id="kodeMasuk" formControlName="kodeMasuk" autocomplete="off"/>
+        </div>
+        <label for="name" class="col-md-3">Kode K/B Keluar</label>
+        <div class="col-md-3">
+          <input type="text" class="form-control" id="kodeKeluar" formControlName="kodeKeluar" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-md-3">Catatan</label>
+        <div class="col-md-9">
+          <textarea class="form-control" formControlName="keterangan" rows="2">
+          </textarea>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer">
+
+      <div class="d-flex justify-content-end" *ngIf="!readonly">
+        <button type="button" class="btn btn-sm btn-danger mr-2" (click)="cancel()">
+          <i class="fa fa-ban"></i> Batal
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa fa-dot-circle-o"></i> Simpan
+        </button>
+      </div>
+      <div class="d-flex justify-content-end" *ngIf="readonly">
+        <button type="button" class="btn btn-sm btn-danger mr-2" (click)="cancel()">
+          <i class="fa fa-ban"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

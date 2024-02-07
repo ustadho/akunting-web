@@ -1,0 +1,426 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header"><i class="fa fa-edit"></i>{{ tipe === 'PMT'? "Other Payment": "Deposit To" }}</div>
+        <div class="card-body">
+          <form
+            class="form-horizontal custome-form"
+            name="form"
+            novalidate
+            (keydown.enter)="$event.preventDefault()"
+            [formGroup]="form"
+          >
+            <!-- (ngSubmit)="save()"
+          [formGroup]="formBiaya" -->
+            <div class="row">
+              <div class="col-md-7">
+                <div class="form-group row">
+                  <label for="akunKasBank" class="col-md-2 col-form-label"
+                    >{{ tipe === 'PMT'? "Paid From": "Deposit To" }}</label
+                  >
+                  <div class="col-md-2 pr-1">
+                    <input
+                      id="nomor"
+                      name="nomor"
+                      type="text"
+                      class="form-control"
+                      formControlName="kodeAkunKasBank"
+                      autocomplete="off"
+                      [ngClass]="{
+                        'is-invalid': isSaving && f.idAkunKasBank.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="isSaving && f.idAkunKasBank.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.idAkunKasBank.errors.required">
+                        Kas/Bank harus diisi
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8 pl-1">
+                    <ng-select
+                      [items]="listAkunKasBank"
+                      bindLabel="nama"
+                      bindValue="id"
+                      id="akunKasBank"
+                      formControlName="idAkunKasBank"
+                      (change)="selectAkunKasBank($event)"
+                    >
+                    </ng-select>
+                    <div
+                      *ngIf="isSaving && f.idAkunKasBank.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.idAkunKasBank.errors.required">
+                        Kas/Bank harus diisi
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-2">Voucher No.</label>
+                  <div class="col-md-4">
+                    <input
+                      id="nomor"
+                      name="nomor"
+                      type="text"
+                      class="form-control"
+                      formControlName="nomor"
+                      autocomplete="off"
+                      [ngClass]="{ 'is-invalid': isSaving && f.nomor.errors }"
+                    />
+                    <div
+                      *ngIf="isSaving && f.nomor.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.nomor.errors.required">
+                        Nomor harus diisi
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 my-auto">
+                    <div class="form-check" [hidden]="tipe==='DPT'">
+                      <label class="form-check-label" for="activated">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="activated"
+                          name="activated"
+                          [(ngModel)]="isMultiCurrency"
+                          [ngModelOptions]="{ standalone: true }"
+                          style="cursor: pointer"
+                        />
+                        <span
+                          jhiTranslate="userManagement.activated"
+                          style="cursor: pointer"
+                          >Void Cheque</span
+                        >
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-2">Tanggal</label>
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-describedby="basic-addon2"
+                        formControlName="tanggal"
+                        bsDatepicker
+                        [bsConfig]="{
+                          showWeekNumbers: false,
+                          dateInputFormat: 'DD/MM/YYYY'
+                        }"
+                        #date="bsDatepicker"
+                        (change)="getNomorBuktiAuto()"
+                      />
+                      <div
+                        class="input-group-append"
+                        (click)="date.toggle()"
+                        style="cursor: pointer"
+                      >
+                        <span class="input-group-text" id="basic-addon2"
+                          ><i class="fa fa-calendar"></i
+                        ></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 my-auto">
+                    <div class="form-group row" [hidden]="tipe==='DPT'">
+                      <label for="name" class="col-md-4">Cheque No.</label>
+                      <div class="col-md-8">
+                        <input
+                          id="nomorCek"
+                          name="nomorCek"
+                          type="text"
+                          class="form-control"
+                          formControlName="nomorCek"
+                          autocomplete="off"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-2">Memo</label>
+                  <div class="col-md-10">
+                    <textarea
+                      class="form-control"
+                      formControlName="keterangan"
+                      rows="2"
+                    >
+                    </textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group row">
+                  <label for="name" class="col-md-3">Perusahaan</label>
+                  <div class="col-md-9">
+                    <ng-select
+                      [items]="listPerusahaan"
+                      bindLabel="nama"
+                      bindValue="id"
+                      formControlName="idPerusahaan"
+                      [ngClass]="{
+                        'is-invalid': isSaving && f.idPerusahaan.errors
+                      }"
+                      placeholder="Pilih Perusahaan"
+                    >
+                    </ng-select>
+                    <div
+                      *ngIf="isSaving && f.idPerusahaan.errors"
+                      class="text-danger small"
+                    >
+                      <div *ngIf="f.idPerusahaan.errors.required">
+                        Perusahaan harus diisi
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row" [hidden]="tipe==='DPT'">
+                  <label for="name" class="col-md-3">Payee</label>
+                  <div class="col-md-9">
+                    <textarea
+                      class="form-control"
+                      formControlName="payee"
+                      rows="2"
+                    >
+                    </textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-3">Amount</label>
+                  <div class="col-md-9">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control text-right font-weight-bold"
+                        aria-describedby="basic-addon2"
+                        formControlName="amount"
+                        currencyInput
+                        [ngClass]="{
+                          'text-danger': isSaving && !isSameTotal
+                        }"
+                      />
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-outline-primary"
+                          type="button"
+                          (click)="adjustAmount()"
+                        >
+                          <span
+                            class="fa fa-calculator"
+                            aria-hidden="true"
+                          ></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="isSaving && !isSameTotal"
+                      class="invalid-feedback"
+                    >
+                      Total Amount masih belum sama
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-12 text-danger">{{f.amount.value | terbilang}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <table class="table table-bordered" id="example">
+                  <thead>
+                    <tr>
+                      <th class="p-2" width="12%">No.Akun</th>
+                      <th class="p-2" width="25%">Nama Akun</th>
+                      <th class="p-2" width="12%" style="text-align: right">
+                        Amount
+                      </th>
+                      <th class="p-2">Memo</th>
+                      <th
+                        class="p-2"
+                        width="100px"
+                        class="center"
+                        style="margin: 0; padding: 0; vertical-align: middle"
+                      ></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container
+                      formArrayName="detail"
+                      *ngFor="
+                        let detail of getFormDetailControls.controls;
+                        let i = index;
+                        let first = first;
+                        let last = last
+                      "
+                    >
+                      <tr [formGroupName]="i">
+                        <td style="margin: 0; padding: 0">
+                          <div class="input-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              aria-describedby="nomor"
+                              formControlName="kodeAkun"
+                              (keyup.enter)="tambahItem()"
+                              (keyup.enter)="searchAkun(i)"
+                              [ngClass]="{
+                                'is-invalid':
+                                  isSaving && detail.controls.kodeAkun.errors
+                              }"
+                            />
+                            <div
+                              class="input-group-append"
+                              style="cursor: pointer"
+                              (click)="openLookupAkun(i)"
+                            >
+                              <span class="input-group-text" id="kodeAkun"
+                                ><i class="fa fa-search"></i
+                              ></span>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="p-1 middle" style="vertical-align: middle">
+                          {{ detail.value.namaAkun }}
+                        </td>
+                        <td
+                          style="
+                            margin: 0;
+                            padding: 0;
+                            vertical-align: middle;
+                            text-align: right;
+                          "
+                        >
+                          <input
+                            type="text"
+                            class="form-control text-right"
+                            #detAmount
+                            formControlName="amount"
+                            (keyup.enter)="tambahItem()"
+                            (change)="hitungTotal()"
+                            currencyInput
+                            autocomplete="off"
+                            maxDigits="9"
+                            [defaultValue]="0"
+                          />
+                        </td>
+                        <td style="margin: 0; padding: 0">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="memo"
+                            (keyup.enter)="tambahItem()"
+                          />
+                        </td>
+                        <td
+                          data-title="Action"
+                          style="
+                            margin: 0;
+                            padding: 0;
+                            vertical-align: middle;
+                            text-align: center;
+                          "
+                        >
+                          <a
+                            lass="fa fa-trash bg-danger"
+                            style="color: red; cursor: pointer"
+                            (click)="onHapusItem(i)"
+                            *ngIf="getFormDetailControls.controls.length > 1"
+                          >
+                            <i class="fa fa-trash-o fa-fw"></i>
+                          </a>
+                          <a
+                            *ngIf="!first"
+                            class="fa fa-arrow-up fa-fw"
+                            style="
+                              color: #20a8d8;
+                              text-decoration: none;
+                              background-color: transparent;
+                              cursor: pointer;
+                            "
+                            (click)="move(-1, i)"
+                          >
+                          </a>
+                          <a
+                            *ngIf="!last"
+                            class="fa fa-arrow-down fa-fw"
+                            style="
+                              color: #20a8d8;
+                              text-decoration: none;
+                              background-color: transparent;
+                              cursor: pointer;
+                            "
+                            (click)="move(1, i)"
+                          >
+                          </a>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td class="py-1 px-2 text-right">
+                        <button
+                          type="button"
+                          class="btn btn-success btn-sm text-white"
+                          (click)="tambahItem()"
+                          style="cursor: pointer"
+                          [hidden]="emptyLatestRow()"
+                        >
+                          Tambah Item
+                        </button>
+                      </td>
+                      <td
+                        colspan="4"
+                        class="p-1"
+                        style="vertical-align: middle"
+                        class="py-1 px-2 text-right"
+                        [ngClass]="{
+                          'text-danger': isSaving && !isSameTotal
+                        }"
+                      >
+                        <strong>Total Payment :: {{ total | number : "1.2-2" }}</strong>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <span [hidden]="emptyLatestRow()" class="font-italic text-muted"
+                  >*) Tekan <strong>Enter</strong> untuk membuat baris
+                  baru</span
+                >
+              </div>
+              <div class="col-md-6 text-right">
+                <button
+                  class="mr-2 btn btn-secondary mr-4"
+                  (click)="batal()"
+                >
+                  Batal
+                </button>
+                <button class="btn btn-success mr-2" (click)="print()" [disabled]="!id">
+                  Cetak
+                </button>
+
+                <button class="btn btn-primary" (click)="save()" [disabled]="!form.valid">
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

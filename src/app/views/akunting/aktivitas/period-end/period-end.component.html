@@ -1,0 +1,61 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Period End
+        </div>
+        <div class="card-body">
+          <h2>
+            <span
+              id="user-management-page-heading"
+              jhiTranslate="userManagement.home.title"
+              >Daftar Period End</span
+            >
+            <button class="btn btn-default pull-right" (click)="refresh()">
+              <i class="fa fa-refresh fa-fw"></i> <span>Refresh</span>
+            </button>
+            <button class="btn btn-success pull-right" (click)="add()">
+              <i class="fa fa-plus fa-fw"></i> <span>Tambah</span>
+            </button>
+          </h2>
+          <div id="no-more-tables" class="table-responsive">
+            <table
+              aria-describedby="tableDesc"
+              style="width: 100%;"
+              class="table table-sm table-stripped table-bordered"
+            >
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Keterangan</th>
+                  <th>Dibuat Tgl.</th>
+                  <th>Dibuat Oleh</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let data of listData"
+                  class="vcard"
+                >
+                  <td data-title="Nama">
+                    {{ data.name }}
+                  </td>
+                  <td data-title="Keterangan">
+                    {{ data.description }}
+                  </td>
+                  <td data-title="Dibuat Tgl.">
+                    {{ data.createdDate | date: "dd/MM/yyyy HH:mm" }}
+                  </td>
+                  <td data-title="Dibuat Oleh">
+                    {{ data.createdBy }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,168 @@
+<form
+  class="form-horizontal custome-form"
+  name="form"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  [formGroup]="form"
+>
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Aktiva Tetap</strong>
+      <small> {{ title }} </small>
+      <button *ngIf="id" type="button" class="btn btn-default pull-right ml-2" (click)="onPrint()"> Cetak </button>
+      <button *ngIf="id" type="button" class="btn btn-success pull-right ml-2" (click)="onRevaluation()"> Revaluasi </button>
+      <button *ngIf="!form.value.disposed && id" type="button" class="btn btn-danger font-weight-bold pull-right" (click)="onDisposed()"> Disposed </button>
+      <button *ngIf="form.value.disposed && id" type="button" class="btn btn-default pull-right" (click)="onCancelDisposed()"> Batal Disposed </button>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="form-group row">
+            <label for="code" class="col-md-2 col-form-label">Kode Aktiva</label>
+            <div class="col-md-8">
+              <input
+                type="text"
+                class="form-control"
+                id="code"
+                formControlName="code"
+                autocomplete="false"
+                [ngClass]="{ 'is-invalid': isSaving && f.code.errors }"
+              />
+              <div *ngIf="isSaving && f.code.errors" class="invalid-feedback">
+                <div *ngIf="f.code.errors.required">Kode harus diisi</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="typeId" class="col-md-2 col-form-label">Tipe Aktiva</label>
+            <div class="col-md-8">
+              <ng-select
+                id="typeId"
+                name="typeId"
+                [items]="listFixassetType"
+                bindLabel="description"
+                bindValue="id"
+                formControlName="typeId"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="purchaseDate" class="col-md-2 col-form-label"
+              >Tgl Beli</label
+            >
+            <div class="col-md-2">
+              <input
+                formControlName="purchaseDate"
+                class="form-control"
+                id="purchaseDate"
+                bsDatepicker
+                [bsConfig]="{
+                  showWeekNumbers: false,
+                  dateInputFormat: 'DD/MM/YYYY'
+                }"
+              />
+            </div>
+            <label for="usageDate" class="col-md-2 col-form-label">Tgl Pakai</label>
+            <div class="col-md-2">
+              <input
+                formControlName="usageDate"
+                class="form-control"
+                id="usageDate"
+                bsDatepicker
+                [bsConfig]="{
+                  showWeekNumbers: false,
+                  dateInputFormat: 'DD/MM/YYYY'
+                }"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="estimationLive" class="col-md-2 col-form-label"
+              >Keterangan</label
+            >
+            <div class="col-md-8">
+              <textarea
+                class="form-control"
+                name="name"
+                id="name"
+                formControlName="name"
+              ></textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="quantity" class="col-md-2 col-form-label">Kuantitas</label>
+            <div class="col-md-2">
+              <input
+                type="number"
+                class="form-control"
+                id="quantity"
+                formControlName="quantity"
+                aria-describedby="quantity"
+                autocomplete="false"
+                [ngClass]="{ 'is-invalid': isSaving && f.quantity.errors }"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="departmentId" class="col-md-2 col-form-label"
+              >Departemen</label
+            >
+            <div class="col-md-7">
+              <ng-select
+                id="departmentId"
+                name="departmentId"
+                [items]="listDepartment"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="departmentId"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <h1 *ngIf="form.value.disposed" class="text-danger"><u>Dihentikan</u></h1>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-12">
+          <tabset>
+            <tab heading="Umum" id="tabUmum">
+              <app-fixasset-form-general [isSaving]="isSaving" [listAkunAll]="listAkunAll"></app-fixasset-form-general>
+            </tab>
+            <tab heading="Pengeluaran" id="tabPengeluaran">
+              <app-fixasset-form-pengeluaran [isSaving]="isSaving"></app-fixasset-form-pengeluaran>
+            </tab>
+            <tab heading="Catatan">
+              <textarea
+                name="notes"
+                id="notes"
+                class="form-control"
+                formControlName="notes"
+                rows="15"
+              ></textarea>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-sm btn-danger mr-2"
+          (click)="onCancel()"
+        >
+          <i class="fa fa-ban"></i> Batal
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary" [disabled]="!allowEditing">
+          <i class="fa fa-dot-circle-o"></i> Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

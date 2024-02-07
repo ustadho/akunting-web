@@ -1,0 +1,19 @@
+<form class="form-horizontal custome-form" name="editForm" role="form" novalidate [formGroup]="editForm">
+  <div class="row">
+    <div class="col-md-4 pr-md-0">
+      <input type="text" class="form-control" id="kode" formControlName="kode" autocomplete="false"
+        [ngClass]="{ 'is-invalid': isSaving && f.kode.errors }" placeholder="Cari Kode Akun"
+        (keydown.enter)="findAkunByKode($event)" />
+    </div>
+    <div class="col-md-8 pl-md-0">
+      <div class="input-group">
+        <input type="text" class="form-control" aria-describedby="nama" formControlName="nama"
+          [ngClass]="{ 'is-invalid': isSaving && f.kode.errors }" (click)="openLookupAkun()">
+        <div class="input-group-append" style="cursor: pointer;" (click)="openLookupAkun()"
+          *ngIf="!readonly">
+          <span class="input-group-text" id="nama"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

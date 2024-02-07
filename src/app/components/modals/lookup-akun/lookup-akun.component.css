@@ -1,0 +1,6 @@
+.table-akun {
+  cursor: pointer;
+}
+.table-akun:hover {
+  background-color: #f1f9ff;
+}

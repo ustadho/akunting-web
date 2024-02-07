@@ -1,0 +1,264 @@
+<form
+  class="form-horizontal"
+  name="form"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  [formGroup]="form"
+>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group row">
+        <label for="idAkunPersediaan" class="col-md-2 col-form-label"
+          >Akun Persediaan</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunPersediaan"
+            formControlName="idAkunPersediaan"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunPersediaan.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunPersediaan.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunPersediaan.errors.required">
+              Akun Persediaan harus dipilih
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunPenjualan" class="col-md-2 col-form-label"
+          >Akun Penjualan</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunPenjualan"
+            formControlName="idAkunPenjualan"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunPenjualan.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunPenjualan.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunPenjualan.errors.required">
+              Akun Penjualan harus dipilih
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunReturPenjualan" class="col-md-2 col-form-label"
+          >Akun Retur Penjualan</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunReturPenjualan"
+            formControlName="idAkunReturPenjualan"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunReturPenjualan.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunReturPenjualan.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunReturPenjualan.errors.required">
+              Akun Retur Penjualan harus dipilih
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunDiskonItem" class="col-md-2 col-form-label"
+          >Akun Diskon Item</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunDiskonItem"
+            formControlName="idAkunDiskonItem"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunDiskonItem.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunDiskonItem.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunDiskonItem.errors.required">
+              Akun Diskon Item harus dipilih
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunItemTerkirim" class="col-md-2 col-form-label"
+          >Akun Barang Terkirim</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunItemTerkirim"
+            formControlName="idAkunItemTerkirim"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunItemTerkirim.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunItemTerkirim.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunItemTerkirim.errors.required">
+              Akun Barang terkirim harus diisi
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunHpp" class="col-md-2 col-form-label"
+          >Akun HPP</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunHpp"
+            formControlName="idAkunHpp"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunHpp.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunHpp.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunHpp.errors.required">
+              Akun HPP harus diisi
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunReturPembelian" class="col-md-2 col-form-label"
+          >Akun Retur Pembelian</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunReturPembelian"
+            formControlName="idAkunReturPembelian"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunReturPembelian.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunReturPembelian.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunReturPembelian.errors.required">
+              Akun Retur Pembelian harus diisi
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunBeban" class="col-md-2 col-form-label"
+          >Akun Beban</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunBeban"
+            formControlName="idAkunBeban"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunBeban.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunBeban.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunBeban.errors.required">
+              Akun Beban harus diisi
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idAkunBelumTertagih" class="col-md-2 col-form-label"
+          >Akun Belum Tertagih</label
+        >
+        <div class="col-md-5 pl-1">
+          <ng-select
+            [items]="listAkun"
+            bindLabel="namaKode"
+            bindValue="id"
+            id="idAkunBelumTertagih"
+            formControlName="idAkunBelumTertagih"
+            [ngClass]="{
+              'is-invalid': isSaving && f.idAkunBelumTertagih.errors
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="isSaving && f.idAkunBelumTertagih.errors"
+            class="danger"
+          >
+            <div *ngIf="f.idAkunBelumTertagih.errors.required">
+              Akun Belum Tertagih harus diisi
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-12 text-right">
+      <button
+        type="submit"
+        class="btn btn-primary pull-right"
+        [disabled]="isSaving"
+      >
+        Simpan
+      </button>
+      <button
+        class="mr-2 btn btn-secondary pull-right"
+        (click)="onCancel()"
+      >
+        Batal
+      </button>
+    </div>
+  </div>
+</form>

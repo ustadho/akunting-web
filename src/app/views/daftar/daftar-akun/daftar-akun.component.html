@@ -1,0 +1,58 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Daftar Akun
+        </div>
+        <div class="card-body">
+          <h2 class="mb-3">
+            <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" class="h5">Daftar Akun</span>
+            <button class="btn btn-success pull-right" (click)="add()">
+              <i class="fa fa-plus fa-fw"></i> <span>Tambah Akun</span>
+            </button>
+            <button class="btn btn-default pull-right" (click)="findAll()">
+              <i class="fa fa-refresh fa-fw"></i> <span>Refresh</span>
+            </button>
+          </h2>
+          <p-treeTable [value]="dataCoa">
+            <ng-template pTemplate="header">
+              <tr>
+                <th width="10%" style="background-color: #f0f3f5;">No. Akun</th>
+                <th width="50%" style="background-color: #f0f3f5;">Nama Akun</th>
+                <th style="background-color: #f0f3f5;">Tipe Akun</th>
+                <th style="background-color: #f0f3f5;">Saldo</th>
+                <th style="background-color: #f0f3f5;" class="text-center">Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+              <tr>
+                <td [ngClass]="{'font-weight-bold': rowData.child_count > 0}">
+                  <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                  {{rowData.kode}}
+                </td>
+                <td [ngClass]="{'font-weight-bold': rowData.child_count > 0}">{{rowData.nama}}</td>
+                <td [ngClass]="{'font-weight-bold': rowData.child_count > 0}">{{rowData.tipe_akun}}</td>
+                <td class="text-right" [ngClass]="{'font-weight-bold': rowData.child_count > 0}">{{rowData.saldo | number}}</td>
+                <td data-title="Actions" class="text-center">
+                  <div class="btn-group flex-btn-group-container">
+                    <button type="submit" (click)="view(rowData)" class="btn btn-info btn-sm">
+                      <i class="fa fa-eye fa-fw"></i>
+                    </button>
+                    <button type="submit" (click)="edit(rowData)" queryParamsHandling="merge"
+                      class="btn btn-primary btn-sm">
+                      <i class="fa fa-pencil fa-fw"></i>
+                    </button>
+                    <button type="button" (click)="delete(rowData)" class="btn btn-danger btn-sm">
+                      <i class="fa fa-trash-o fa-fw"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-treeTable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

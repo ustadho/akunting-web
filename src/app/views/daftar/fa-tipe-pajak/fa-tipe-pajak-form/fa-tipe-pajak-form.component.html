@@ -1,0 +1,118 @@
+<form
+  class="form-horizontal custome-form"
+  name="editForm"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  [formGroup]="editForm"
+>
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Aktiva Tetap Pajak </strong>
+      <small> {{ title }} </small>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="bsModalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <label for="description" class="col-md-3 col-form-label">Tipe Aktiva Tetap Pajak</label>
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            formControlName="description"
+            autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.description.errors }"
+          />
+          <div *ngIf="isSaving && f.description.errors" class="invalid-feedback">
+            <div *ngIf="f.description.errors.required">Tipe Aktiva harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="metodePenyusutan" class="col-md-3 col-form-label"
+          >Metode Penyusutan</label
+        >
+        <div class="col-md-9">
+          <ng-select
+            id="metodePenyusutan"
+            name="metodePenyusutan"
+            [items]="listDepreciationMethod"
+            bindLabel="description"
+            bindValue="id"
+            formControlName="depreciationMethodId"
+            (change)="selectDepreciationMethod($event)"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="estimationLive" class="col-md-3 col-form-label">Estimasi umur Pajak</label>
+        <div class="col-md-3">
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              id="estimationLive"
+              formControlName="estimationLive"
+              aria-describedby="nilai"
+              autocomplete="false"
+              (change)="calculateRate()"
+              [ngClass]="{ 'is-invalid': isSaving && f.estimationLive.errors }"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text" id="estimationLive">tahun</span>
+            </div>
+            <div *ngIf="isSaving && f.estimationLive.errors" class="invalid-feedback">
+              <div *ngIf="f.estimationLive.errors.required">Estimasi umur harus diisi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="tarif" class="col-md-3 col-form-label">Tarif penyusutan Pajak</label>
+        <div class="col-md-3">
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              id="tarif"
+              formControlName="rate"
+              aria-describedby="rate"
+              autocomplete="false"
+              [ngClass]="{ 'is-invalid': isSaving && f.rate.errors }"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text" id="rate">%</span>
+            </div>
+            <div *ngIf="isSaving && f.rate.errors" class="invalid-feedback">
+              <div *ngIf="f.rate.errors.required">Estimasi umur harus diisi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-sm btn-danger mr-2"
+          (click)="cancel()"
+        >
+          <i class="fa fa-ban"></i> Batal
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa fa-dot-circle-o"></i> Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

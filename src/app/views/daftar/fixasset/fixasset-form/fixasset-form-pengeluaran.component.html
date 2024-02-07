@@ -1,0 +1,191 @@
+<ng-container [formGroup]="form">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered" id="example">
+        <thead>
+          <tr>
+            <th class="p-2" width="12%">No.Akun</th>
+            <th class="p-2" width="25%">Tanggal</th>
+            <th class="p-2">Keterangan</th>
+            <th class="p-2" width="12%" style="text-align: right">Jumlah</th>
+            <th
+              class="p-2"
+              width="100px"
+              class="center"
+              style="margin: 0; padding: 0; vertical-align: middle"
+            ></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container
+            formArrayName="detail"
+            *ngFor="
+            let detail of getFormDetailControls.controls;
+            let i = index;
+            let first = first;
+            let last = last
+          "
+          >
+            <tr [formGroupName]="i">
+              <td style="margin: 0; padding: 0">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="nomor"
+                    formControlName="akunCode"
+                    (keyup.enter)="tambahItem()"
+                    (keyup.enter)="searchAkun(i)"
+                    [ngClass]="{
+                    'is-invalid':
+                      isSaving && detail.controls.akunCode.errors
+                  }"
+                  />
+                  <div
+                    class="input-group-append"
+                    style="cursor: pointer"
+                    (click)="openLookupAkun(i)"
+                  >
+                    <span class="input-group-text" id="akunCode"
+                      ><i class="fa fa-search"></i
+                    ></span>
+                  </div>
+                </div>
+              </td>
+              <td style="margin: 0; padding: 0">
+                <input
+                  formControlName="expDate"
+                  class="form-control"
+                  id="expDate"
+                  bsDatepicker
+                  [bsConfig]="{
+                    showWeekNumbers: false,
+                    dateInputFormat: 'DD/MM/YYYY'
+                  }"
+                />
+              </td>
+              <td style="margin: 0; padding: 0">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="description"
+                  (keyup.enter)="tambahItem()"
+                />
+              </td>
+              <td
+                style="
+                  margin: 0;
+                  padding: 0;
+                  vertical-align: middle;
+                  text-align: right;
+                "
+              >
+                <input
+                  type="text"
+                  class="form-control text-right"
+                  #detAmount
+                  formControlName="amount"
+                  (keyup.enter)="tambahItem()"
+                  (change)="calculateDetail()"
+                  currencyInput
+                  [defaultValue]="0"
+                />
+              </td>
+              <td
+                data-title="Action"
+                style="
+                  margin: 0;
+                  padding: 0;
+                  vertical-align: middle;
+                  text-align: center;
+                "
+              >
+                <a
+                  lass="fa fa-trash bg-danger"
+                  style="color: red; cursor: pointer"
+                  (click)="onHapusItem(i)"
+                  *ngIf="getFormDetailControls.controls.length > 1"
+                >
+                  <i class="fa fa-trash-o fa-fw"></i>
+                </a>
+                <a
+                  *ngIf="!first"
+                  class="fa fa-arrow-up fa-fw"
+                  style="
+                    color: #20a8d8;
+                    text-decoration: none;
+                    background-color: transparent;
+                    cursor: pointer;
+                  "
+                  (click)="onMove(-1, i)"
+                >
+                </a>
+                <a
+                  *ngIf="!last"
+                  class="fa fa-arrow-down fa-fw"
+                  style="
+                    color: #20a8d8;
+                    text-decoration: none;
+                    background-color: transparent;
+                    cursor: pointer;
+                  "
+                  (click)="onMove(1, i)"
+                >
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="py-1 px-2 text-right">
+              <button
+                type="button"
+                class="btn btn-success btn-sm text-white"
+                (click)="tambahItem()"
+                style="cursor: pointer"
+                [disabled]="disabledAddItem"
+                [hidden]="emptyLatestRow()"
+              >
+                Tambah Item
+              </button>
+            </td>
+            <td
+              colspan="4"
+              class="p-1"
+              style="vertical-align: middle"
+              class="py-1 px-2 text-right"
+              [ngClass]="{
+              'text-danger': isSaving && !isSameTotal
+            }"
+            >
+              <!-- <strong>Total Payment :: {{ total | number : "1.2-2" }}</strong> -->
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="col-md-12">
+      <table class="table table-sm table-bordered">
+        <thead style="background-color: darkslateblue; color: white;">
+          <tr>
+            <th scope="col" width="50%">Harga Perolehan</th>
+            <th scope="col">Aktiva Dihentikan</th>
+            <th scope="col">Akum Penyusutan</th>
+            <th scope="col">Nilai Buku Akuntansi</th>
+            <th scope="col">Nilai Sisa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right">{{form.value.cost | number}}</td>
+            <td class="text-right">{{form.value.amountOfStopped | number}}</td>
+            <td class="text-right">{{form.value.amountOfDepreciation | number}}</td>
+            <td class="text-right">{{form.value.amountOfAccountingValue | number}}</td>
+            <td class="text-right">{{form.value.residu | number}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>

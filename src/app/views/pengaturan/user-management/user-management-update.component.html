@@ -1,0 +1,348 @@
+<form
+  class="form-horizontal"
+  name="editForm"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  #editForm="ngForm"
+>
+  <div class="card large">
+    <div class="card-header">
+      <strong> Form User </strong>
+      <small> {{ title }} </small>
+    </div>
+    <div class="card-body">
+      <div>
+        <!-- <jhi-alert-error></jhi-alert-error> -->
+        <div class="form-group row" [hidden]="!user.id">
+          <label jhiTranslate="global.field.id" class="col-md-2 col-form-label"
+            >ID</label
+          >
+          <div class="col-md-2">
+            <input
+              type="text"
+              class="form-control"
+              name="id"
+              [(ngModel)]="user.id"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="form-control-label" class="col-md-2 col-form-label"
+            >Login</label
+          >
+          <div class="col-md-10">
+            <input
+              type="text"
+              class="form-control"
+              name="login"
+              #loginInput="ngModel"
+              [(ngModel)]="user.login"
+              required
+              minlength="1"
+              maxlength="50"
+              pattern="^[_.@A-Za-z0-9-]*$"
+            />
+
+            <div *ngIf="loginInput.dirty && loginInput.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="loginInput.errors.required"
+                jhiTranslate="entity.validation.required"
+              >
+                This field is required.
+              </small>
+
+              <small
+                class="form-text text-danger"
+                *ngIf="loginInput.errors.maxlength"
+                jhiTranslate="entity.validation.maxlength"
+                translateValues="{max: 50}"
+              >
+                This field cannot be longer than 50 characters.
+              </small>
+
+              <small
+                class="form-text text-danger"
+                *ngIf="loginInput.errors.pattern"
+                jhiTranslate="entity.validation.patternLogin"
+              >
+                This field can only contain letters, digits and e-mail
+                addresses.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label
+            class="col-md-2 col-form-label"
+            jhiTranslate="userManagement.firstName"
+            >Nama Depan</label
+          >
+          <div class="col-md-10">
+            <input
+              type="text"
+              class="form-control"
+              name="firstName"
+              #firstNameInput="ngModel"
+              [(ngModel)]="user.firstName"
+              maxlength="50"
+            />
+
+            <div *ngIf="firstNameInput.dirty && firstNameInput.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="firstNameInput.errors.maxlength"
+                jhiTranslate="entity.validation.maxlength"
+                translateValues="{max: 50}"
+              >
+                This field cannot be longer than 50 characters.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label
+            jhiTranslate="userManagement.lastName"
+            class="col-md-2 col-form-label"
+            >Nama Belakang</label
+          >
+          <div class="col-md-10">
+            <input
+              type="text"
+              class="form-control"
+              name="lastName"
+              #lastNameInput="ngModel"
+              [(ngModel)]="user.lastName"
+              maxlength="50"
+            />
+
+            <div *ngIf="lastNameInput.dirty && lastNameInput.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="lastNameInput.errors.maxlength"
+                jhiTranslate="entity.validation.maxlength"
+                translateValues="{max: 50}"
+              >
+                This field cannot be longer than 50 characters.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label
+            class="col-md-2 col-form-label"
+            jhiTranslate="userManagement.email"
+            >Email</label
+          >
+          <div class="col-md-10">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              #emailInput="ngModel"
+              [(ngModel)]="user.email"
+              minlength="5"
+              required
+              maxlength="254"
+              email
+            />
+
+            <div *ngIf="emailInput.dirty && emailInput.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="emailInput.errors.required"
+                jhiTranslate="entity.validation.required"
+              >
+                This field is required.
+              </small>
+
+              <small
+                class="form-text text-danger"
+                *ngIf="emailInput.errors.maxlength"
+                jhiTranslate="entity.validation.maxlength"
+                translateValues="{max: 100}"
+              >
+                This field cannot be longer than 100 characters.
+              </small>
+
+              <small
+                class="form-text text-danger"
+                *ngIf="emailInput.errors.minlength"
+                jhiTranslate="entity.validation.minlength"
+                translateValues="{min: 5}"
+              >
+                This field is required to be at least 5 characters.
+              </small>
+
+              <small
+                class="form-text text-danger"
+                *ngIf="emailInput.errors.email"
+                jhiTranslate="global.messages.validate.email.invalid"
+              >
+                Your email is invalid.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label
+            class="col-md-2 col-form-label"
+            jhiTranslate="userManagement.email"
+            >Tipe User</label
+          >
+          <div class="col-md-10">
+            <select
+              name="userType"
+              id="userType"
+              class="form-control"
+              #userTypeSelect="ngModel"
+              [(ngModel)]="user.userType"
+              required
+            >
+              <option *ngFor="let ut of userTypes" [value]="ut">
+                {{ ut }}
+              </option>
+            </select>
+            <div *ngIf="userTypeSelect.dirty && userTypeSelect.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="userTypeSelect.errors.required"
+                jhiTranslate="entity.validation.required"
+              >
+                Tipe user harus dipilih
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" [hidden]="!(user.userType == 'INTERNAL')">
+          <label class="col-md-2" jhiTranslate="userManagement.profiles"
+            >Profiles</label
+          >
+          <div class="col-md-10">
+            <select
+              class="form-control"
+              multiple
+              name="authority"
+              [(ngModel)]="user.authorities"
+              [required]="user.userType == 'INTERNAL'"
+              #authoritiesSelect="ngModel"
+            >
+              <option *ngFor="let authority of authorities" [value]="authority">
+                {{ authority }}
+              </option>
+            </select>
+            <div *ngIf="authoritiesSelect.dirty && authoritiesSelect.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="authoritiesSelect.errors.required"
+                jhiTranslate="entity.validation.required"
+              >
+                Authorities harus dipilih
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" [hidden]="!(user.userType == 'EMKL')">
+          <label class="col-md-2">EMKL</label>
+          <div class="col-md-10">
+            <ng-select
+              [items]="listEmkl"
+              bindLabel="nama"
+              bindValue="id"
+              name="emkl"
+              [(ngModel)]="user.emkl"
+              #emklInput="ngModel"
+              [required]="user.userType == 'EMKL'"
+            >
+            </ng-select>
+            <div *ngIf="emklInput.dirty && emklInput.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="emklInput.errors.required"
+                jhiTranslate="entity.validation.required"
+              >
+                EMKL Harus dipilih
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" [hidden]="!(user.userType == 'CUSTOMER')">
+          <label class="col-md-2">Customer</label>
+          <div class="col-md-10">
+            <ng-select
+              [items]="selectTokoPengirims"
+              bindLabel="nama"
+              bindValue="id"
+              name="toko"
+              [(ngModel)]="user.customer"
+              #tokoInput="ngModel"
+              [required]="user.userType == 'CUSTOMER'"
+            >
+            </ng-select>
+            <div *ngIf="tokoInput.dirty && tokoInput.invalid">
+              <small
+                class="form-text text-danger"
+                *ngIf="tokoInput.errors.required"
+                jhiTranslate="entity.validation.required"
+              >
+                Toko Harus dipilih
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-2" jhiTranslate="userManagement.profiles"
+            >&nbsp;</label
+          >
+          <div class="col-md-10">
+            <div class="form-check">
+              <label class="form-check-label" for="activated">
+                <input
+                  class="form-check-input"
+                  [disabled]="user.id === null"
+                  type="checkbox"
+                  id="activated"
+                  name="activated"
+                  [(ngModel)]="user.activated"
+                />
+                <span jhiTranslate="userManagement.activated">Activated</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-2" jhiTranslate="userManagement.profiles"
+            >&nbsp;</label
+          >
+          <div class="col-md-10">
+            <p>
+              Default password dari user baru adalah '12345678', silahkan
+              lakukan perubahan password dari menu Ubah password
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="previousState()"
+        >
+          <i class="fa fa-ban fa-fw"></i>
+          &nbsp;<span jhiTranslate="entity.action.cancel">Batal</span>
+        </button>
+        <button
+          type="submit"
+          [disabled]="editForm.form.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <i class="fa fa-save fa-fw"></i>
+          &nbsp;<span jhiTranslate="entity.action.save">Simpan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

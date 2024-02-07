@@ -1,0 +1,289 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Laporan Keuangan
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Pilih jenis laporan</h4>
+              <ul class="list-group">
+                <li
+                  *ngFor="let l of jenisLaporan"
+                  class="list-group-item"
+                  [class.active]="l === laporanTerpilih"
+                  style="cursor: pointer"
+                  (click)="pilih(l)"
+                >
+                  {{ l.id }}. {{ l.nama }}
+                </li>
+              </ul>
+            </div>
+            <div class="col">
+              <h4>Parameter</h4>
+              <form
+                class="form-horizontal"
+                name="editForm"
+                role="form"
+                novalidate
+                [formGroup]="editForm"
+              >
+                <div class="card">
+                  <div class="card-body">
+                    <div
+                      class="form-group row"
+                    >
+                      <label class="col-md-2 col-form-label" for="vat">
+                        Pilih Laporan
+                      </label>
+                      <div class="col">
+                        <ng-select
+                          [items]="listPilihanLaporan"
+                          bindLabel="nama"
+                          bindValue="id"
+                          name="subLaporanTerpilih"
+                          formControlName="subLaporanTerpilih"
+                        ></ng-select>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <label class="col-md-2 col-form-label" for="vat">
+                        Perusahaan
+                      </label>
+                      <div class="col">
+                        <ng-select
+                          [items]="listPerusahaan"
+                          bindLabel="nama"
+                          bindValue="id"
+                          formControlName="perusahaan"
+                        ></ng-select>
+                      </div>
+                    </div>
+                    <div class="form-group row" [hidden]="![reportGL.BUKU_BESAR_RINCI].includes(this.editForm.get('subLaporanTerpilih').value)">
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Akun</label
+                      >
+                      <div class="col">
+                        <ng-select
+                          [items]="listAkunKasBank"
+                          bindLabel="namaKode"
+                          bindValue="id"
+                          formControlName="accountId"
+                        ></ng-select>
+                      </div>
+                    </div>
+                    <div class="form-group row" [hidden]="[reportKeu.LABA_RUGI_MULTI_PERIODE].includes(this.editForm.get('subLaporanTerpilih').value)">
+                      <label class="col-md-2 col-form-label" for="vat" [hidden]="[reportGL.DAFTAR_AKUN, reportKeu.NERACA_STANDAR, reportKeu.NERACA_SKONTRO, reportKB.DAFTAR_AKUN_KASBANK].includes(this.editForm.get('subLaporanTerpilih').value)"
+                        >Dari</label
+                      >
+                      <div class="col-md-3" [hidden]="[reportGL.DAFTAR_AKUN, reportKeu.NERACA_STANDAR, reportKeu.NERACA_SKONTRO, reportKB.DAFTAR_AKUN_KASBANK].includes(this.editForm.get('subLaporanTerpilih').value)">
+                        <input
+                          class="form-control"
+                          id="tg1"
+                          formControlName="tg1"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Sampai
+                      </label>
+                      <div class="col-md-3">
+                        <input
+                          class="form-control"
+                          id="tg2"
+                          formControlName="tg2"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row" [hidden]="![reportKeu.LABA_RUGI_PERBANDINGAN_PERIODE].includes(this.editForm.get('subLaporanTerpilih').value)">
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Dari</label
+                      >
+                      <div class="col-md-3">
+                        <input
+                          class="form-control"
+                          id="ltg1"
+                          formControlName="ltg1"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Sampai
+                      </label>
+                      <div class="col-md-3">
+                        <input
+                          class="form-control"
+                          id="ltg2"
+                          formControlName="ltg2"
+                          bsDatepicker
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD/MM/YYYY'
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row" [hidden]="![reportKeu.LABA_RUGI_MULTI_PERIODE].includes(this.editForm.get('subLaporanTerpilih').value)">
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Dari</label
+                      >
+                      <div class="col-md-3" >
+                        <div class="input-group mb-3">
+                          <select formControlName="bl1" class="form-control">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                          </select>
+                          <input type="number" class="form-control" formControlName="th1">
+                        </div>
+                      </div>
+                      <label class="col-md-2 col-form-label" for="vat"
+                        >Sampai
+                      </label>
+                      <div class="col-md-3" >
+                        <div class="input-group mb-3">
+                          <select formControlName="bl2" class="form-control">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                          </select>
+                          <input type="number" class="form-control" formControlName="th2">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-2 col-form-label"
+                        >&nbsp;</label
+                      >
+                      <div class="col-md-3 form-check d-flex flex-column">
+                        <label class="form-check-label " for="tampilkanInduk"
+                        [hidden]="![reportKeu.LABA_RUGI_MULTI_PERIODE, reportKeu.NERACA_STANDAR, reportKeu.NERACA_SKONTRO, reportKeu.LABA_RUGI_STANDAR, reportKeu.LABA_RUGI_PERBANDINGAN_PERIODE].includes(this.editForm.get('subLaporanTerpilih').value)">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="tampilkanInduk"
+                            id="tampilkanInduk"
+                            formControlName="tampilkanInduk"
+                            checked
+                          />
+                          <span>Tampilkan Induk</span>
+                        </label>
+                        <label class="form-check-label " for="termasukSaldoNol"
+                        [hidden]="![reportKeu.LABA_RUGI_MULTI_PERIODE, reportKeu.NERACA_STANDAR, reportKeu.NERACA_SKONTRO, reportKeu.LABA_RUGI_STANDAR, reportKeu.LABA_RUGI_PERBANDINGAN_PERIODE].includes(this.editForm.get('subLaporanTerpilih').value)">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="tampilkanAnak"
+                            id="tampilkanAnak"
+                            formControlName="tampilkanAnak"
+                            checked
+                          />
+                          <span>Tampilkan Anak</span>
+                        </label>
+                        <label class="form-check-label " for="termasukSaldoNol"
+                        [hidden]="![reportKeu.LABA_RUGI_MULTI_PERIODE, reportGL.NERACA_SALDO, reportGL.NERACA_SALDO_KLASIK, reportKeu.NERACA_STANDAR, reportKeu.NERACA_SKONTRO, reportKeu.LABA_RUGI_STANDAR, reportKeu.LABA_RUGI_PERBANDINGAN_PERIODE].includes(this.editForm.get('subLaporanTerpilih').value)">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="termasukSaldoNol"
+                            id="termasukSaldoNol"
+                            formControlName="termasukSaldoNol"
+                            checked
+                          />
+                          <span>Termasuk saldo nol</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group row pull-right">
+                      <div class="col-md-12">
+                        <button
+                          class="btn btn-secondary"
+                          type="button"
+                          (click)="onCancel()"
+                        >
+                          Batal
+                        </button>
+                        &nbsp;
+                        <div class="btn-group" dropdown>
+                          <button
+                            id="button-animated"
+                            dropdownToggle
+                            type="button"
+                            class="btn btn-primary dropdown-toggle"
+                            aria-controls="dropdown-animated"
+                            [disabled]="!editForm.valid"
+                          >
+                            Cetak <span class="caret"></span>
+                          </button>
+                          <ul
+                            id="dropdown-animated"
+                            *dropdownMenu
+                            class="dropdown-menu"
+                            role="menu"
+                            aria-labelledby="button-animated"
+                          >
+                            <li role="menuitem">
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="cetak('pdf')"
+                                >PDF</a
+                              >
+                            </li>
+                            <li role="menuitem">
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="cetak('xlsx')"
+                                >XLSX</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

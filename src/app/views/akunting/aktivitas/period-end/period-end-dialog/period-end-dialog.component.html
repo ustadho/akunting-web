@@ -1,0 +1,73 @@
+<form
+  class="form-horizontal custome-form"
+  name="editForm"
+  role="form"
+  novalidate
+  (ngSubmit)="save()"
+  [formGroup]="editForm"
+>
+  <div class="card mb-0">
+    <div class="card-header">
+      <strong> Period End </strong>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="bsModalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <label for="period" class="col-md-2 col-form-label">Bulan</label>
+        <div class="col-md-8">
+          <select
+              name="period"
+              id="period"
+              class="form-control"
+              formControlName="period"
+              required
+            >
+              <option *ngFor="let b of bulans" [value]="b.id">
+                {{ b.name }}
+              </option>
+            </select>
+          <div *ngIf="isSaving && f.period.errors" class="invalid-feedback">
+            <div *ngIf="f.period.errors.required">Bulan harus diisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-md-2 col-form-label">Tahun</label>
+        <div class="col-md-4">
+          <input
+            type="number"
+            class="form-control"
+            id="tahun"
+            formControlName="tahun"
+            autocomplete="false"
+            [ngClass]="{ 'is-invalid': isSaving && f.tahun.errors }"
+          />
+          <div *ngIf="isSaving && f.tahun.errors" class="invalid-feedback">
+            <div *ngIf="f.tahun.errors.required">Tahun Dept harus diisi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-sm btn-danger mr-2"
+          (click)="cancel()"
+        >
+          <i class="fa fa-ban"></i> Batal
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="fa fa-dot-circle-o"></i> Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

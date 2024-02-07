@@ -1,0 +1,107 @@
+<app-header
+  [navbarBrandRouterLink]="['/dashboard']"
+  [fixed]="true"
+  [navbarBrandFull]="{
+    src: 'assets/img/brand/logo.png',
+    width: 100,
+    height: 37,
+    alt: 'Akunting Logo'
+  }"
+  [navbarBrandMinimized]="{
+    src: 'assets/img/brand/sygnet.svg',
+    width: 30,
+    height: 30,
+    alt: 'Akunting Logo'
+  }"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="false"
+>
+  <ul class="nav navbar-nav d-md-down-none">
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Dashboard</a>
+    </li>
+    <li class="nav-item px-3">
+      <a class="nav-link" routerLink="/aktivitas/suratjalan/entri"
+        >Surat Jalan</a
+      >
+    </li>
+    <li class="nav-item px-3">
+      <a class="nav-link" routerLink="/aktivitas/stuffing">Stuffing</a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav ml-auto">
+    <!-- <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"
+        ><i class="icon-bell"></i
+        ><span class="badge badge-pill badge-danger">5</span></a
+      >
+    </li> -->
+    <li class="nav-item">
+      {{currentAccount.firstName}} - {{currentAccount.lastName}}
+    </li>
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a
+        class="nav-link"
+        data-toggle="dropdown"
+        href="#"
+        role="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+        dropdownToggle
+        (click)="(false)"
+      >
+        <img
+          src="assets/img/avatars/6.jpg"
+          class="img-avatar"
+          alt="admin@bootstrapmaster.com"
+        />
+      </a>
+      <div
+        class="dropdown-menu dropdown-menu-right"
+        *dropdownMenu
+        aria-labelledby="simple-dropdown"
+      >
+        <div class="dropdown-header text-center"><strong>Account</strong></div>
+        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" routerLink="/admin/ubah-password"
+          ><i class="fa fa-wrench"></i> Ubah Password</a
+        >
+        <div class="divider"></div>
+        <a class="dropdown-item" href="" (click)="logout()"
+          ><i class="fa fa-lock"></i> Logout</a
+        >
+      </div>
+    </li>
+  </ul>
+</app-header>
+<div class="app-body">
+  <app-sidebar
+    #appSidebar
+    [fixed]="true"
+    [display]="'lg'"
+    [minimized]="sidebarMinimized"
+    (minimizedChange)="toggleMinimize($event)"
+  >
+    <app-sidebar-nav
+      [navItems]="navItems"
+      [perfectScrollbar]
+      [disabled]="appSidebar.minimized"
+    ></app-sidebar-nav>
+  </app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <!-- breaking change 'cui-breadcrumb' -->
+    <cui-breadcrumb> </cui-breadcrumb>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.container-fluid -->
+  </main>
+</div>
+<app-footer>
+  <span><a href="https://akunting.id">Akunting</a> &copy; 2024</span>
+  <span class="ml-auto"
+    >Powered by <a href="https://ustasoft.id">Ustasoft</a></span
+  >
+</app-footer>
